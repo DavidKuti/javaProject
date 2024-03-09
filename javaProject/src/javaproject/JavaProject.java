@@ -8,8 +8,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.*;
-import java.util.Enumeration;
-import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
@@ -22,8 +20,8 @@ public class JavaProject extends JFrame{
     JFrame frame = new JFrame();
     JLabel icon_,title, pan1,pan2,pan3,pan4,pan5,pan6,pan7,pan8,pan9;
     JPanel title_panel, form_panel, pane1,pane2,pane3,pane4,pane5,pane6,pane7,pane8,pane9;
-    JButton submitBtn;
-    String txt8 = "";
+    JButton submitBtn,login;
+    String txt8;
     
     JavaProject() throws SQLException{
         
@@ -236,13 +234,6 @@ public class JavaProject extends JFrame{
             bg.add(male);
             bg.add(female);
             bg.add(other);
-            for (Enumeration<AbstractButton> buttons = bg.getElements(); buttons.hasMoreElements();) {
-              JRadioButton button = (JRadioButton) buttons.nextElement();
-              if (button.isSelected()) {
-                txt8 = button.getText();
-                break;
-              }
-            }
             gbc2.anchor = gbc2.WEST;
             gbc2.gridx= 0;
             gbc2.gridy = 1;
@@ -267,27 +258,44 @@ public class JavaProject extends JFrame{
             gbc2.gridx= 0;
             gbc2.gridy = 0;
             pane9.add(pan9,gbc2);
-            JPasswordField passwordField = new JPasswordField(10);
-            passwordField.setEchoChar('*');
-            passwordField.setFont(new Font("Serif", Font.BOLD, 20));
-            char[] txt = passwordField.getPassword();
-            String txt9 = new String(txt);
+            JTextField txt9 = new JTextField(10);
+            txt9.setFont(new Font("Serif", Font.BOLD, 20));
+            
             gbc2.anchor = gbc2.WEST;
             gbc2.gridx= 0;
             gbc2.gridy = 1;
-            pane9.add(passwordField,gbc2);
+            pane9.add(txt9,gbc2);
             
             gbc.gridx = 0;
             gbc.gridy = 50;
             form_panel.add(pane9,gbc);
             
-            submitBtn = new JButton("Submit");
+            submitBtn = new JButton("Register");
             gbc.anchor = gbc.EAST;
             gbc.gridy = 55;
             submitBtn.setFont(new Font("Serif", Font.BOLD, 20));
 
             form_panel.add(submitBtn, gbc);
+            
+            login = new JButton("Head to login");
+            gbc.anchor = gbc.WEST;
+            gbc.gridy = 55;
+            login.setFont(new Font("Serif", Font.BOLD, 20));
+            form_panel.add(login, gbc);
+            
             JScrollPane scrollPane = new JScrollPane(form_panel);
+            login.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    dispose();
+                    loginPage lp = new loginPage();
+                } catch (SQLException ex) {
+                    Logger.getLogger(JavaProject.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+                
+            });
             submitBtn.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -310,6 +318,29 @@ public class JavaProject extends JFrame{
 //                }
 //                if(txt.length > 0){
                     try{
+                            if (male.isSelected()) {
+                                txt8 = "m";
+                            }else if (female.isSelected()) {
+                                txt8 = "f";
+                            }else if(other.isSelected()){
+                            }else{
+                                throw new exception("Gender");
+                            }
+                            if(txt9.getText().isBlank()||txt7.getText().isBlank()||txt6.getText().isBlank()||txt5.getText().isBlank()||txt4.getText().isBlank()
+                                    ||txt2.getText().isBlank()||txt1.getText().isBlank()){
+                                throw new exception("Field");
+                            }
+                            if(txt1.getText().length() > 30||txt2.getText().length() > 30||txt4.getText().length() > 20||txt5.getText().length() > 11||
+                                    txt6.getText().length() > 200||txt7.getText().length() > 6||txt9.getText().length() > 20){
+                                throw new exception("Field");
+                            }
+                            try{
+                                Integer.valueOf(txt4.getText());
+                                Integer.valueOf(txt5.getText());
+                                Integer.valueOf(txt7.getText());
+                            }catch(Exception er){
+                                throw new exception("Field");
+                            }
                             String query =  "Insert into Customer Values("
                                     + "'"+txt1.getText()+"',"
                                     + "'"+txt2.getText()+"',"
@@ -319,15 +350,22 @@ public class JavaProject extends JFrame{
                                     + "'"+txt6.getText()+"',"
                                     + "'"+txt7.getText()+"',"
                                     + "'"+txt8+"',"
-                                    + "'"+txt9+"'"
+                                    + "'"+txt9.getText()+"'"
                                     + ")";
                             Statement st = con.createStatement();
 
                             int rs = st.executeUpdate(query);
                             System.out.println(rs);
+                            JOptionPane.showMessageDialog(rootPane, "Registration Successful!");
+                            frame.dispose();
+                            loginPage lp = new loginPage();
                         }catch(SQLException se){
-                            System.out.println(se);
+                            JOptionPane.showMessageDialog(rootPane, "Registration UnSuccessful!");
+                        }catch(exception ee){
                         }
+//                        catch(Exception ex){
+//                            JOptionPane.showMessageDialog(rootPane, "Registration UnSuccessful!");
+//                        }
                 }
 //            }
             
@@ -341,8 +379,15 @@ public class JavaProject extends JFrame{
             
     }
     
+    class exception extends RuntimeException{
+        exception(String colName){
+            JOptionPane.showMessageDialog(frame,("Invalid value provided for " + colName));
+        }
+    }
+    
     public static void main(String[] args) throws SQLException {
         JavaProject jp = new JavaProject();
     }
     
 }
+
