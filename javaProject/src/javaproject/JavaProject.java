@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
@@ -341,6 +342,19 @@ public class JavaProject extends JFrame{
                             }catch(Exception er){
                                 throw new exception("Field");
                             }
+                            String query2 = "select NIN from Customer";
+                            Statement st = con.createStatement();
+                            ResultSet rf = st.executeQuery(query2);
+                            ArrayList ar = new ArrayList<String>();
+                            while(rf.next()){
+                                ar.add(rf.getString(1));
+                            }
+                            for (Object el : ar) {
+                               if(el.equals(txt4.getText())){
+                                   throw new exception();
+                               }
+                            };
+
                             String query =  "Insert into Customer Values("
                                     + "'"+txt1.getText()+"',"
                                     + "'"+txt2.getText()+"',"
@@ -352,7 +366,6 @@ public class JavaProject extends JFrame{
                                     + "'"+txt8+"',"
                                     + "'"+txt9.getText()+"'"
                                     + ")";
-                            Statement st = con.createStatement();
 
                             int rs = st.executeUpdate(query);
                             System.out.println(rs);
@@ -382,6 +395,9 @@ public class JavaProject extends JFrame{
     class exception extends RuntimeException{
         exception(String colName){
             JOptionPane.showMessageDialog(frame,("Invalid value provided for " + colName));
+        }
+        exception(){
+            JOptionPane.showMessageDialog(frame,("Your Account exists! Kindly log in!"));
         }
     }
     

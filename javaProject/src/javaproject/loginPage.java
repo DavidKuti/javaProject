@@ -163,6 +163,58 @@ public class loginPage extends JFrame{
                 }
             }
             });
+            submitBtn.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try{
+                    if(txt1.getText().isBlank()||txt2.getText().isBlank()||txt3.getText().isBlank()||txt4.getText().isBlank()){
+                        throw new exception();
+                    }
+                    if(txt1.getText().length() > 30||txt2.getText().length() > 30||txt3.getText().length() > 11||txt4.getText().length() > 20){
+                        throw new exception();
+                    }
+                    String query =  "select FirstName, Lastname, contactNo, password "
+                            + "from Customer where ContactNo = '" + txt3.getText() + "'";
+                    Statement st = con.createStatement();
+                    ResultSet rf = st.executeQuery(query);
+                    ResultSetMetaData rsm = rf.getMetaData();
+                    int count = rsm.getColumnCount();
+                    // Print column names
+//                    for (int i = 1; i <= count; i++) {
+//                        System.out.print(rsm.getColumnName(i) + "\t");
+//                    }
+//                    System.out.println();
+
+                    // Print data for each row
+                    while (rf.next()) {
+                        System.out.println(rf.getString(2));
+                        if(rf.getString(1).equals(txt1.getText())){
+                            if(rf.getString(2).equals(txt2.getText())){
+                                if(rf.getString(3).equals(txt3.getText())){
+                                    if(rf.getString(4).equals(txt4.getText())){
+                                            JOptionPane.showMessageDialog(rootPane, "Login Successful!");
+                                            frame.dispose();
+                                    }else{
+                                        throw new exception();
+                                    }
+                                }else{
+                                    throw new exception();
+                                }
+                            }else{
+                                throw new exception();
+                            }
+                        }else{
+                            throw new exception();
+                        }
+                    }
+                    
+                }catch(SQLException se){
+                    JOptionPane.showMessageDialog(rootPane, "Invalid Details");
+                }catch(exception eer){
+                    
+                }
+            }
+            });
             this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             this.setMinimumSize(new Dimension(1900,700));
             this.getContentPane().add(scrollPane, BorderLayout.CENTER);
@@ -170,8 +222,13 @@ public class loginPage extends JFrame{
             setVisible(true);
     }
     
+    class exception extends RuntimeException{
+        exception(){
+            JOptionPane.showMessageDialog(frame,("Invalid Details!"));
+        }
+    }
+    
     public static void main(String[] args) throws SQLException {
         loginPage lp = new loginPage();
     }
-    
 }
