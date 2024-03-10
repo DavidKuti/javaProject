@@ -4,12 +4,12 @@
  */
 package javaproject;
 
-import javax.swing.JFrame;
+import javax.swing.*;
 
 /**
  *
  * @author david
  */
-public class main extends JFrame {
+public class main extends JFrame{
     
 }

@@ -331,8 +331,8 @@ public class JavaProject extends JFrame{
                                     ||txt2.getText().isBlank()||txt1.getText().isBlank()){
                                 throw new exception("Field");
                             }
-                            if(txt1.getText().length() > 30||txt2.getText().length() > 30||txt4.getText().length() > 20||txt5.getText().length() > 11||
-                                    txt6.getText().length() > 200||txt7.getText().length() > 6||txt9.getText().length() > 20){
+                            if(txt1.getText().trim().length() > 30||txt2.getText().trim().length() > 30||txt4.getText().trim().length() > 20||txt5.getText().trim().length() > 11||
+                                    txt6.getText().trim().length() > 200||txt7.getText().trim().length() > 6||txt9.getText().trim().length() > 20){
                                 throw new exception("Field");
                             }
                             try{
@@ -356,15 +356,15 @@ public class JavaProject extends JFrame{
                             };
 
                             String query =  "Insert into Customer Values("
-                                    + "'"+txt1.getText()+"',"
-                                    + "'"+txt2.getText()+"',"
-                                    + "'"+txt3+"',"
-                                    + "'"+txt4.getText()+"',"
-                                    + "'"+txt5.getText()+"',"
-                                    + "'"+txt6.getText()+"',"
-                                    + "'"+txt7.getText()+"',"
-                                    + "'"+txt8+"',"
-                                    + "'"+txt9.getText()+"'"
+                                    + "'"+txt1.getText().trim()+"',"
+                                    + "'"+txt2.getText().trim()+"',"
+                                    + "'"+txt3.trim()+"',"
+                                    + "'"+txt4.getText().trim()+"',"
+                                    + "'"+txt5.getText().trim()+"',"
+                                    + "'"+txt6.getText().trim()+"',"
+                                    + "'"+txt7.getText().trim()+"',"
+                                    + "'"+txt8.trim()+"',"
+                                    + "'"+txt9.getText().trim()+"'"
                                     + ")";
 
                             int rs = st.executeUpdate(query);
