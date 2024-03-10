@@ -187,23 +187,22 @@ public class loginPage extends JFrame{
 
                     // Print data for each row
                     while (rf.next()) {
-                        System.out.println(rf.getString(2));
+                        System.out.println(rf.getString(3));
                         if(rf.getString(1).equals(txt1.getText())){
                             if(rf.getString(2).equals(txt2.getText())){
-                                if(rf.getString(3).equals(txt3.getText())){
-                                    if(rf.getString(4).equals(txt4.getText())){
-                                            JOptionPane.showMessageDialog(rootPane, "Login Successful!");
-                                            frame.dispose();
-                                    }else{
-                                        throw new exception();
-                                    }
+                                if(rf.getString(4).equals(txt4.getText())){
+                                    JOptionPane.showMessageDialog(rootPane, "Login Successful!");
+                                    dispose();
                                 }else{
+                                    System.out.println("4");
                                     throw new exception();
                                 }
                             }else{
+                                System.out.println("2");
                                 throw new exception();
                             }
                         }else{
+                            System.out.println("1");
                             throw new exception();
                         }
                     }
