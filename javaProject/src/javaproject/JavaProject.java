@@ -404,6 +404,5 @@ public class JavaProject extends JFrame{
     public static void main(String[] args) throws SQLException {
         JavaProject jp = new JavaProject();
     }
-    
 }
 
