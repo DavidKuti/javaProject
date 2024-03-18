@@ -170,11 +170,11 @@ public class loginPage extends JFrame{
                     if(txt1.getText().isBlank()||txt2.getText().isBlank()||txt3.getText().isBlank()||txt4.getText().isBlank()){
                         throw new exception();
                     }
-                    if(txt1.getText().trim().length() > 30||txt2.getText().trim().length() > 30||txt3.getText().trim().length() > 11||txt4.getText().trim().length() > 20){
+                    if(txt1.getText().length() > 30||txt2.getText().length() > 30||txt3.getText().length() > 11||txt4.getText().length() > 20){
                         throw new exception();
                     }
                     String query =  "select FirstName, Lastname, contactNo, password "
-                            + "from Customer where ContactNo = '" + txt3.getText().trim() + "'";
+                            + "from Customer where ContactNo = '" + txt3.getText() + "'";
                     Statement st = con.createStatement();
                     ResultSet rf = st.executeQuery(query);
                     ResultSetMetaData rsm = rf.getMetaData();
@@ -187,12 +187,12 @@ public class loginPage extends JFrame{
 
                     // Print data for each row
                     while (rf.next()) {
-                        System.out.println(rf.getString(3));
-                        if(rf.getString(1).equals(txt1.getText().trim())){
-                            if(rf.getString(2).equals(txt2.getText().trim())){
-                                if(rf.getString(4).equals(txt4.getText().trim())){
+                        if(rf.getString(1).equals(txt1.getText())){
+                            if(rf.getString(2).equals(txt2.getText())){
+                                if(rf.getString(4).equals(txt4.getText())){
                                     JOptionPane.showMessageDialog(rootPane, "Login Successful!");
                                     dispose();
+                                    main mn = new main();
                                 }else{
                                     System.out.println("4");
                                     throw new exception();
